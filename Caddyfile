@@ -1,0 +1,20 @@
+{
+	frankenphp
+	order php_server before file_server
+}
+
+:80 {
+	# Enable compression for speed
+	encode zstd br gzip
+
+	# Point to where your files are inside the container
+	root * /app
+
+	# Configure the PHP worker
+	php_server {
+		worker ./worker.php 1
+	}
+
+	# Important: If a file isn't found, load the worker
+	try_files {path} /worker.php
+}
