@@ -55,7 +55,7 @@ This demonstrates how we package the application for production using standard D
 
 This recipe tells Docker to grab the official FrankenPHP image, copy our code into the /app folder, and---crucially---overwrite the default server config with our custom Caddyfile."
 
-Dockerfile
+```Dockerfile
 
 FROM  dunglas/frankenphp
 
@@ -66,18 +66,21 @@ ENV  FRANKENPHP_CONFIG="worker  ./worker.php"
 COPY  .  /app
 
 COPY  Caddyfile  /etc/frankenphp/Caddyfile
+```
 
 2\. Build the Image Run this command to package the app into a sealed container:
 
-Bash
+```Bash
 
 docker  build  -t  my-app-prod  .
+```
 
 3\. Run the Container Simulate a production server running the app. We map port 8097 to the container's internal port 80.
 
-Bash
+```Bash
 
 docker  run  -p  8097:80  my-app-prod
+```
 
 4\. The Result
 
