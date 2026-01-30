@@ -6,16 +6,16 @@ if (php_sapi_name() !== 'cli') {
     // If we are not in CLI mode, just run the logic below.
 }
 
-// 1. SIMULATE HEAVY BOOT (The "Cost" of a Framework)
+// SIMULATE HEAVY BOOT (The "Cost" of a Framework)
 // We do this ONCE when the container starts.
 $bootStart = microtime(true);
 $heavyArray = [];
-for ($i = 0; $i < 30000; $i++) $heavyArray[] = md5($i); // Increased load slightly to make it visible
+for ($i = 0; $i < 30000; $i++) $heavyArray[] = md5($i);
 $bootTime = (microtime(true) - $bootStart) * 1000;
 
 error_log("Worker Ready! Boot cost was: " . round($bootTime, 2) . "ms");
 
-// 2. THE WORKER
+// THE WORKER
 $handler = static function () use ($bootTime) {
 
     // API REQUEST
@@ -95,11 +95,11 @@ $handler = static function () use ($bootTime) {
             const res = await fetch('/?act=json');
             const data = await res.json();
             
-            // 1. Update FrankenPHP (Real)
+            // Update FrankenPHP (Real)
             document.getElementById('new-total').innerText = data.processing_ms.toFixed(2) + " ms";
             document.getElementById('new-proc').innerText = data.processing_ms.toFixed(2);
             
-            // 2. Update Standard PHP (Simulated)
+            // Update Standard PHP (Simulated)
             // We show what it WOULD have cost if we paid the boot tax
             document.getElementById('old-total').innerText = data.standard_total_ms.toFixed(2) + " ms";
             document.getElementById('old-proc').innerText = data.processing_ms.toFixed(2);
@@ -110,8 +110,6 @@ $handler = static function () use ($bootTime) {
 </html>
 HTML;
 };
-
-// 3. Start Loop
 $maxRequests = (int)($_SERVER['MAX_REQUESTS'] ?? 0);
 for ($nbRequests = 0; !$maxRequests || $nbRequests < $maxRequests; ++$nbRequests) {
     $keepRunning = \frankenphp_handle_request($handler);
