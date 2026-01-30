@@ -1,4 +1,4 @@
-FrankenPHP Guide
+FrankenPHP
 ================
 
 ### 1\. What is it?
